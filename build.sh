@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-EMCC=~/src/emscripten/emcc
+EMCC=emcc
 JOBS=4
 MYDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -25,11 +25,13 @@ pushd build
     -o browserhack.js \
     -s EMTERPRETIFY=1 \
     -s EMTERPRETIFY_ASYNC=1 \
+    -s 'EMTERPRETIFY_FILE="browserhack.bytecode"' \
     --memory-init-file 1 \
     --js-library ../win/web/nethack_lib.js \
     --preload-file nethack \
 
 popd
+cp build/browserhack.bytecode web/
 cp build/browserhack.js web/
 cp build/browserhack.js.mem web/
 cp build/browserhack.data web/
